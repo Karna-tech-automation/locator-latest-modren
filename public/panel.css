@@ -26,39 +26,84 @@ body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont,
 h1 { font-size: 18px; margin: 0 0 16px; }
 h2 { font-size: 12px; margin: 16px 0 8px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
 
+/* Tabs */
 .tabs { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
 .tab-btn { flex: 1; padding: 8px; background: none; border: none; font-size: 13px; font-weight: 600; color: #888; cursor: pointer; border-radius: 4px; }
 .tab-btn.active { background: var(--surface); color: var(--accent); }
 
-.primary-btn { width: 100%; padding: 10px; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; }
+/* Buttons */
+.primary-btn { width: 100%; padding: 10px; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; transition: opacity 0.2s; }
+.primary-btn:hover { opacity: 0.9; }
 
+.button-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.button-row .primary-btn { flex: 1; margin: 0; }
+.secondary-btn { padding: 10px 14px; background: var(--surface); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; font-weight: bold; cursor: pointer; white-space: nowrap; }
+.secondary-btn:hover { background: var(--border); }
+
+/* Assertion Toggle */
+.assert-toggle-label { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; cursor: pointer; font-weight: bold; color: var(--warning); }
+.assert-toggle-label input { width: auto; }
+
+/* File Toolbar */
+.file-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; }
+.file-dropdown { flex: 1; padding: 8px; background: var(--surface); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; outline: none; }
+.icon-btn { padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 14px; height: 100%; }
+.icon-btn:hover { background: var(--border); }
+
+/* Dropdown Menu */
+.dropdown-menu { position: absolute; top: 40px; right: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 100; min-width: 220px; overflow: hidden; }
+.dropdown-item { display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 12px; text-align: left; background: none; color: var(--fg); cursor: pointer; font-size: 12px; border-bottom: 1px solid var(--border); font-weight: 500; }
+.dropdown-item:last-child { border-bottom: none; }
+.dropdown-item:hover { background: var(--surface); color: var(--accent); }
+
+/* Locator Cards */
 .card-list { display: flex; flex-direction: column; gap: 8px; }
-.locator-card { padding: 10px; border-radius: 6px; border: 1px solid var(--border); cursor: pointer; position: relative; background: var(--surface); word-break: break-all; }
-.locator-card code { font-family: 'SF Mono', Menlo, monospace; font-size: 12px; display: block; }
-.badge { display: inline-block; margin-top: 6px; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
-.locator-card.recommended { border-left: 4px solid gold; background: rgba(255, 215, 0, 0.05); }
-
-/* Code Boxes */
-.code-box-container { margin-top: 16px; }
-textarea {
-  width: 100%; 
-  height: 250px; /* ✅ Reduced height to fit 3 boxes */
-  background: var(--surface); color: var(--fg);
-  border: 1px solid var(--border); border-radius: 6px; padding: 10px;
-  font-family: 'SF Mono', Menlo, monospace; font-size: 12px; resize: vertical;
+.locator-card { 
+  padding: 12px; 
+  border-radius: 6px; 
+  border: 1px solid var(--border); 
+  cursor: pointer; 
+  position: relative; 
+  background: var(--surface); 
+  transition: all 0.2s ease; 
 }
-.export-btn { margin-top: 8px; padding: 6px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; color: var(--fg); font-weight: bold; width: 100%; }
+.locator-card:hover { 
+  border-color: var(--accent); 
+  background: var(--bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.locator-card code { 
+  display: block;
+  font-family: 'SF Mono', Menlo, monospace; 
+  font-size: 12px; 
+  word-break: break-all; 
+  white-space: pre-wrap; 
+  line-height: 1.4; 
+}
+.badge { 
+  display: inline-block; 
+  margin-top: 8px; 
+  font-size: 10px; 
+  font-weight: 600; 
+  padding: 2px 6px; 
+  border-radius: 4px; 
+}
+.locator-card.recommended { 
+  border-left: 4px solid gold; 
+  background: rgba(255, 215, 0, 0.05); 
+}
+.locator-card.recommended:hover {
+  background: rgba(255, 215, 0, 0.1);
+}
+/* Code Boxes */
+.code-box-container { margin-top: 4px; }
+textarea { width: 100%; height: 450px; background: var(--surface); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-family: 'SF Mono', Menlo, monospace; font-size: 12px; resize: vertical; line-height: 1.5; }
+.export-btn { margin-top: 8px; padding: 8px 12px; background: var(--accent); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; transition: opacity 0.2s; }
+.export-btn:hover { opacity: 0.9; }
 
 /* Modal */
-.modal-overlay {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 9999;
-}
-.modal-content {
-  background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 8px; width: 80%; max-width: 300px;
-}
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.modal-content { background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 8px; width: 80%; max-width: 300px; }
 .modal-content h3 { margin-top: 0; font-size: 14px; }
 .modal-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-.assert-choice-btn {
-  padding: 10px; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;
-}
+.assert-choice-btn { padding: 10px; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }

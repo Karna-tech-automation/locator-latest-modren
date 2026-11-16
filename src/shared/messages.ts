@@ -1,4 +1,4 @@
-import type { SupportedLanguage, GeneratedLocator, ElementData, RecordedAction, RecordedApiCall } from './types';
+import type { SupportedLanguage, GeneratedLocator, ElementData, RecordedAction } from './types';
 
 export const MESSAGE_SOURCE = {
   CONTENT: 'locator-healer:content',
@@ -18,7 +18,7 @@ export type RuntimeMessage =
   | { type: 'TOGGLE_ASSERTION_MODE'; tabId: number; isAssertionMode: boolean }
   | { type: 'ACTION_RECORDED'; action: RecordedAction }
   | { type: 'ASSERTION_TARGET_PICKED'; locatorCode: string; tagName: string; text: string; value: string }
-  | { type: 'API_RECORDED'; apiCall: RecordedApiCall };
+  | { type: 'NEW_TAB_OPENED' };
 
 export type TabMessage =
   | { type: 'START_PICK'; language: SupportedLanguage; testIdAttribute: string }
@@ -37,8 +37,7 @@ export type InjectToContentMessage =
   | { source: typeof MESSAGE_SOURCE.INJECT; type: 'LOCATOR_RESULT'; locators: GeneratedLocator[]; elementData: ElementData }
   | { source: typeof MESSAGE_SOURCE.INJECT; type: 'LOCATOR_ERROR'; message: string }
   | { source: typeof MESSAGE_SOURCE.INJECT; type: 'ACTION_RECORDED'; action: RecordedAction }
-  | { source: typeof MESSAGE_SOURCE.INJECT; type: 'ASSERTION_TARGET_PICKED'; locatorCode: string; tagName: string; text: string; value: string }
-  | { source: typeof MESSAGE_SOURCE.INJECT; type: 'API_RECORDED'; apiCall: RecordedApiCall };
+  | { source: typeof MESSAGE_SOURCE.INJECT; type: 'ASSERTION_TARGET_PICKED'; locatorCode: string; tagName: string; text: string; value: string };
 
 export type WindowMessage = ContentToInjectMessage | InjectToContentMessage;
 

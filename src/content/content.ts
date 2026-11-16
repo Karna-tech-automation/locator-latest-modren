@@ -8,16 +8,12 @@ import {
 } from '../shared/messages';
 
 let isPicking = false;
+let isRecording = false;
 let overlay: HTMLDivElement | null = null;
 let currentLang: any = 'javascript';
 let currentTestId = 'data-testid';
 
-function safeSendMessage(message: any) {
-  try {
-    void chrome.runtime.sendMessage(message).catch(() => { /* ignore extension context errors */ });
-  } catch (e) { /* ignore */ }
-}
-
+// ─── Finder Overlay ───
 function startPicking(lang: string, testId: string) {
   currentLang = lang;
   currentTestId = testId;
@@ -79,31 +75,24 @@ function onClick(e: MouseEvent) {
 function onKeyDown(e: KeyboardEvent) {
   if (e.key === 'Escape' && isPicking) {
     stopPicking();
-    safeSendMessage({ type: 'PICK_CANCELLED' } as RuntimeMessage); // ✅ Fixed with safeSendMessage
+    try { void chrome.runtime.sendMessage({ type: 'PICK_CANCELLED' } as RuntimeMessage); } catch(e) {}
   }
 }
 
+// ─── Message Bridges ───
 window.addEventListener('message', (event: MessageEvent<WindowMessage>) => {
   if (event.source !== window) return;
   const data = event.data;
   if (!isInjectMessage(data)) return;
 
   if (data.type === 'LOCATOR_RESULT') {
-    safeSendMessage({ type: 'PICK_RESULT', locators: data.locators, elementData: data.elementData } as RuntimeMessage);
+    try { void chrome.runtime.sendMessage({ type: 'PICK_RESULT', locators: data.locators, elementData: data.elementData } as RuntimeMessage); } catch(e) {}
   } else if (data.type === 'LOCATOR_ERROR') {
-    safeSendMessage({ type: 'PICK_ERROR', message: data.message } as RuntimeMessage);
+    try { void chrome.runtime.sendMessage({ type: 'PICK_ERROR', message: data.message } as RuntimeMessage); } catch(e) {}
   } else if (data.type === 'ACTION_RECORDED') {
-    safeSendMessage({ type: 'ACTION_RECORDED', action: data.action } as RuntimeMessage);
+    try { void chrome.runtime.sendMessage({ type: 'ACTION_RECORDED', action: data.action } as RuntimeMessage); } catch(e) {}
   } else if (data.type === 'ASSERTION_TARGET_PICKED') {
-    safeSendMessage({ 
-      type: 'ASSERTION_TARGET_PICKED', 
-      locatorCode: data.locatorCode, 
-      tagName: data.tagName, 
-      text: data.text, 
-      value: data.value 
-    } as RuntimeMessage);
-  } else if (data.type === 'API_RECORDED') {
-    safeSendMessage({ type: 'API_RECORDED', apiCall: data.apiCall } as RuntimeMessage);
+    try { void chrome.runtime.sendMessage({ type: 'ASSERTION_TARGET_PICKED', locatorCode: data.locatorCode, tagName: data.tagName, text: data.text, value: data.value } as RuntimeMessage); } catch(e) {}
   }
 });
 
@@ -113,8 +102,10 @@ chrome.runtime.onMessage.addListener((message: TabMessage) => {
   } else if (message.type === 'STOP_PICK') {
     stopPicking();
   } else if (message.type === 'START_RECORDING') {
+    isRecording = true;
     window.postMessage({ source: MESSAGE_SOURCE.CONTENT, type: 'START_RECORDING', testIdAttribute: message.testIdAttribute, language: message.language }, '*');
   } else if (message.type === 'STOP_RECORDING') {
+    isRecording = false;
     window.postMessage({ source: MESSAGE_SOURCE.CONTENT, type: 'STOP_RECORDING' }, '*');
   } else if (message.type === 'TOGGLE_ASSERTION_MODE') {
     window.postMessage({ source: MESSAGE_SOURCE.CONTENT, type: 'TOGGLE_ASSERTION_MODE', isAssertionMode: message.isAssertionMode }, '*');

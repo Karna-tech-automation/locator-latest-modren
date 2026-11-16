@@ -17,7 +17,7 @@
         <button id="tab-recorder" class="tab-btn">⏺ Recorder</button>
       </div>
 
-      <!-- FINDER VIEW -->
+      <!-- ================= FINDER VIEW ================= -->
       <div id="view-finder">
         <button id="pick-btn" class="primary-btn">🎯 Pick Element</button>
         <section id="results-section" style="display: none; margin-top: 16px;">
@@ -26,35 +26,53 @@
         </section>
       </div>
 
-      <!-- RECORDER VIEW -->
+      <!-- ================= RECORDER VIEW ================= -->
       <div id="view-recorder" style="display: none;">
-        <button id="record-btn" class="primary-btn">⏺ Start Recording</button>
         
-        <label style="display: flex; align-items: center; gap: 8px; margin-top: 12px; cursor: pointer; font-weight: bold; color: var(--warning);">
-          <input type="checkbox" id="assert-toggle" style="width: auto;" />
+        <!-- Top Row: Start/Stop & Switch Tab -->
+        <div class="button-row">
+          <button id="record-btn" class="primary-btn">⏺ Start Recording</button>
+          <button id="switch-tab-btn" class="secondary-btn" title="Track actions in a newly opened tab">➕ Tab</button>
+        </div>
+        
+        <label class="assert-toggle-label">
+          <input type="checkbox" id="assert-toggle" />
           Assertion Mode (Click element to assert)
         </label>
 
-        <!-- 1. RAW TEST FILE -->
-        <div class="code-box-container">
-          <h2>Raw Test File (Standalone)</h2>
-          <textarea id="raw-test-code" readonly spellcheck="false"></textarea>
-          <button id="copy-raw-test-btn" class="export-btn">Copy Raw Code</button>
+        <!-- File Toolbar: Dropdown & Features Gear -->
+        <div class="file-toolbar">
+          <select id="file-selector" class="file-dropdown">
+            <option value="raw_test">Raw Test (.js)</option>
+            <option value="faker_data">Faker Data (.js)</option>
+            <option value="auth_setup">Auth Setup (.js)</option>
+            <option value="pom_test">POM Test (.js)</option>
+            <option value="page_object">Page Object (.js)</option>
+          </select>
+
+          <div style="position: relative;">
+            <button id="features-btn" class="icon-btn" title="Advanced Features">⚙️</button>
+            <!-- Dropdown Menu -->
+            <div id="features-menu" class="dropdown-menu" style="display: none;">
+              <label class="dropdown-item">
+                <input type="checkbox" id="toggle-faker" /> Add Faker.js Data
+              </label>
+              <label class="dropdown-item">
+                <input type="checkbox" id="toggle-tags" /> Add @smoke Tag
+              </label>
+              <label class="dropdown-item">
+                <input type="checkbox" id="toggle-auth" /> Add Auth StorageState
+              </label>
+            </div>
+          </div>
         </div>
 
-        <!-- 2. POM TEST FILE -->
+        <!-- Code Box -->
         <div class="code-box-container">
-          <h2>Framework Test File (Uses POM)</h2>
-          <textarea id="test-code" readonly spellcheck="false"></textarea>
-          <button id="copy-test-btn" class="export-btn">Copy Test Code</button>
+          <textarea id="main-code-box" readonly spellcheck="false" placeholder="Start recording to generate code..."></textarea>
+          <button id="copy-main-btn" class="export-btn">Copy Code</button>
         </div>
 
-        <!-- 3. PAGE OBJECT FILE -->
-        <div class="code-box-container">
-          <h2>Page Object (.js)</h2>
-          <textarea id="page-code" readonly spellcheck="false"></textarea>
-          <button id="copy-page-btn" class="export-btn">Copy Page Code</button>
-        </div>
       </div>
 
     </main>

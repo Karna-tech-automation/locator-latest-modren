@@ -27,7 +27,7 @@ export interface GeneratedLocator {
 }
 
 export interface RecordedAction {
-  type: 'action' | 'assertion';
+  type: 'action' | 'assertion' | 'new_tab';
   actionType: 'click' | 'fill' | 'select' | 'hover' | 'press' | 'assert_visible' | 'assert_enabled' | 'assert_text' | 'assert_value';
   locatorCode: string;
   value?: string;
@@ -35,11 +35,5 @@ export interface RecordedAction {
   tagName: string;
   text?: string;
   isIframe?: boolean;
-}
-
-export interface RecordedApiCall {
-  method: string;
-  url: string;
-  body: any;
-  headers: Record<string, string>;
+  isAuto?: boolean; // ✅ Distinguishes auto tabs (links) from manual tabs (+ Tab button)
 }
